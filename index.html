@@ -274,10 +274,9 @@
         $scope.defaultItem = 0;
         $scope.limitedItem = 0;
 
-        $scope.dateList = [];
-        $scope.dataDateList = [];
-
         $http.get('http://thekeldeo.co/skins/merge.json').then(function (res) {
+            $scope.dateList = [];
+            $scope.dataDateList = [];
             $scope.data = res.data;
             $scope.data.forEach(function (item) {
                 if (item.tags.indexOf('legacy') !== -1) {
