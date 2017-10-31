@@ -62,7 +62,7 @@
 
     <div ng-show="!isStatic" class="container app-wrapper">
         <div class="row">
-            <div class="col-md-3 item-card" data-toggle="modal" data-target="#detailPopup" ng-click="openDetail(item)"
+            <div class="col-lg-3 col-md-4 col-sm-6 item-card" data-toggle="modal" data-target="#detailPopup" ng-click="openDetail(item)"
                  ng-repeat="item in data | orderBy: activeOrder| filter: query | filterSkins: activeFilter">
                 <div class="card">
                     <img class="card-img-top" ng-src="image/splash-art-censor/{{item.splashPath.split('/')[6]}}"
@@ -232,7 +232,6 @@
 
         $scope.triggerStatic = function () {
             $scope.data1 = $filter('orderBy')($scope.data, 'PurchaseDate');
-            console.log($scope.data1);
             $scope.data1.forEach(function (item) {
                 item.PurchaseMonth = (item.PurchaseDate.getMonth() + 1) + '/' + item.PurchaseDate.getFullYear();
                 if ($scope.dateList.indexOf(item.PurchaseMonth) === -1) {
@@ -245,8 +244,6 @@
             });
 
             $scope.isStatic = true;
-            console.log($scope.dataDateList);
-            console.log($scope.dateList);
             $scope.labels = ["Normal", "Legacy", "Epic", "Legendaray", "Hextech", "Ultimate", "Limited"];
             $scope.dataChart = [$scope.defaultItem, $scope.legacyItem, $scope.epicItem, $scope.legendItem, $scope.mythicItem, $scope.ultimateItem, $scope.limitedItem];
             $scope.type = 'pie';
