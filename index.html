@@ -307,9 +307,6 @@
                 item.PurchaseDate = new Date(item.PurchaseDate);
             })
         });
-        $http.get('http://thekeldeo.co/skins/da.json').then(function (res) {
-            $scope.skinAll = res.data.skinMetadata;
-        });
     });
     app.filter('filterSkins', function () {
         return function (items, filter) {
