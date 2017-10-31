@@ -280,7 +280,7 @@
         $scope.dateList = [];
         $scope.dataDateList = [];
 
-        $http.get('/merge.json').then(function (res) {
+        $http.get('http://thekeldeo.co/skins/merge.json').then(function (res) {
             $scope.data = res.data;
             $scope.data.forEach(function (item) {
                 if (item.tags.indexOf('legacy') !== -1) {
@@ -307,7 +307,7 @@
                 item.PurchaseDate = new Date(item.PurchaseDate);
             })
         });
-        $http.get('/da.json').then(function (res) {
+        $http.get('http://thekeldeo.co/skins/da.json').then(function (res) {
             $scope.skinAll = res.data.skinMetadata;
         });
     });
