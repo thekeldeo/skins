@@ -231,6 +231,9 @@
         };
 
         $scope.triggerStatic = function () {
+            $scope.dateList = [];
+            $scope.dataDateList = [];
+
             $scope.data1 = $filter('orderBy')($scope.data, 'PurchaseDate');
             $scope.data1.forEach(function (item) {
                 item.PurchaseMonth = (item.PurchaseDate.getMonth() + 1) + '/' + item.PurchaseDate.getFullYear();
@@ -275,8 +278,6 @@
         $scope.limitedItem = 0;
 
         $http.get('http://thekeldeo.co/skins/merge.json').then(function (res) {
-            $scope.dateList = [];
-            $scope.dataDateList = [];
             $scope.data = res.data;
             $scope.data.forEach(function (item) {
                 if (item.tags.indexOf('legacy') !== -1) {
