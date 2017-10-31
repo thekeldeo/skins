@@ -1,0 +1,33 @@
+.app-wrapper {
+    padding: 100px 0;
+}
+.navbar-brand {
+    cursor: pointer;
+}
+
+.item-card {
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.card-title {
+    display: inline-block;
+}
+
+.star {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.table-static {
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.table-s {
+}
+
+.btn {
+    cursor: pointer;
+}

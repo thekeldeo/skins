@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SecretSword Skins</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+    <script src="./angular-count-to.min.js"></script>
+
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+    <nav class="navbar fixed-top navbar-light bg-light">
+        <div>
+            <div class="navbar-brand" ng-click="isStatic = false">@SecretSword</div>
+            <div class="navbar-brand" ng-click="triggerStatic()">Statics</div>
+        </div>
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" ng-model="query.name" placeholder="Search"
+                   aria-label="Search">
+            <select style="margin-right: 8px" ng-model="activeFilter" class="custom-select">
+                <option value="" disabled selected>Filter</option>
+                <option value="all">All</option>
+                <option value="legacy">Legacy Skins</option>
+                <option value="epic">Epic Skins</option>
+                <option value="legendary">Legendary Skins</option>
+                <option value="limited">Limited Skins</option>
+                <option value="mithic">Hextech Skins</option>
+                <option value="ultimate">Ultimate Skins</option>
+            </select>
+            <select ng-model="activeOrder" class="custom-select">
+                <option value="" disabled selected>Order</option>
+                <option value="-PurchaseDate">By PurchaseDate</option>
+                <option value="-rpValue">By RP</option>
+                <option value="championId">By Champion Id</option>
+            </select>
+        </form>
+    </nav>
+
+    <div ng-show="!isStatic" class="container app-wrapper">
+        <div class="row">
+            <div class="col-md-3 item-card" data-toggle="modal" data-target="#detailPopup" ng-click="openDetail(item)"
+                 ng-repeat="item in data | orderBy: activeOrder| filter: query | filterSkins: activeFilter">
+                <div class="card">
+                    <img class="card-img-top" ng-src="image/splash-art-censor/{{item.splashPath.split('/')[6]}}"
+                         alt="{{item.name}}">
+                    <div class="star">
+                        <i data-toggle="tooltip" data-placement="right" title="Legacy skin"
+                           ng-if="item.tags.indexOf('legacy') !== -1" class="material-icons">star_half</i>
+                        <i data-toggle="tooltip" data-placement="right" title="Legendary skin"
+                           ng-if="item.rarity === 'LEGENDARY'" class="material-icons">stars</i>
+                        <i data-toggle="tooltip" data-placement="right" title="Hextech skin"
+                           ng-if="item.rarity === 'MYTHIC'" class="material-icons">whatshot</i>
+                        <i data-toggle="tooltip" data-placement="right" title="Ultimate skin"
+                           ng-if="item.rarity === 'ULTIMATE'" class="material-icons">brightness_high</i>
+                        <i data-toggle="tooltip" data-placement="right" title="Limited skin"
+                           ng-if="item.rpValue === 9999" class="material-icons">filter_vintage</i>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">
+                            {{item.name}}
+                        </div>
+                        <div class="card-text">
+                            <img width="30px" src="./image/rp-icon.png" alt="">
+                            {{item.rpValue}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="isStatic" class="app-wrapper container">
+        <div class="row table-static">
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Number (s)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Legacy Skins</td>
+                        <td><span count-to="{{legacyItem}}" count-from="0" duration="2"></span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Epic Skins</td>
+                        <td><span count-to="{{epicItem}}" count-from="0" duration="2"></span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Legendary Skins</td>
+                        <td><span count-to="{{legendItem}}" count-from="0" duration="2"></span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>Hextech Skins</td>
+                        <td><span count-to="{{mythicItem}}" count-from="0" duration="2"></span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>Ultimate Skins</td>
+                        <td><span count-to="{{ultimateItem}}" count-from="0" duration="2"></span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>Limited Skins</td>
+                        <td><span count-to="{{limitedItem}}" count-from="0" duration="2"></span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">6</th>
+                        <td>TOTAL</td>
+                        <td><span count-to="{{data.length}}" count-from="0" duration="2"></span></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Biểu đồ</div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="base" class="chart-base" chart-type="type"
+                                chart-data="dataChart" chart-labels="labels">
+                        </canvas>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-info" ng-click="toggle()">Change chart type</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Purchase Date Time line (Skins)</div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="bar" class="chart-base"chart-type="typePurchase"
+                                chart-data="dataDateList" chart-labels="dateList">
+                        </canvas>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-info" ng-click="triggerType()">Change chart type</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="detailPopup">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="card">
+                        <img class="card-img-top" ng-src="image/splash-art/{{activeSkin.splashPath.split('/')[6]}}"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <div class="card-title"><strong>{{activeSkin.name}}</strong></div>
+                            <p class="card-text float-right">
+                                <small class="text-muted">{{activeSkin.PurchaseDate |date: 'medium'}}</small>
+                            </p>
+                            <p class="card-text"><strong>English name: </strong>{{activeSkin.eName}}</p>
+                            <p class="card-text" ng-if="activeSkin.rarity != ''"><strong>Skin rarity</strong>:
+                                {{activeSkin.rarity}}</p>
+                            <p class="card-text" ng-if="activeSkin.rpValue != 9999"><strong>Rp Value</strong>:
+                                {{activeSkin.rpValue}}</p>
+                            <p class="card-text text-danger" ng-if="activeSkin.rpValue == 9999">LIMITED SKINS</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    var app = angular.module('myApp', ['chart.js', 'countTo']);
+    app.controller('myCtrl', function ($scope, $http, $filter) {
+
+        setTimeout(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        }, 1000);
+
+        $scope.activeOrder = 'PurchaseDate';
+
+        $scope.isStatic = false;
+
+        $scope.openDetail = function (item) {
+            $scope.activeSkin = item;
+        };
+
+        $scope.triggerStatic = function () {
+            $scope.data1 = $filter('orderBy')($scope.data, 'PurchaseDate');
+            console.log($scope.data1);
+            $scope.data1.forEach(function (item) {
+                item.PurchaseMonth = (item.PurchaseDate.getMonth() + 1) + '/' + item.PurchaseDate.getFullYear();
+                if ($scope.dateList.indexOf(item.PurchaseMonth) === -1) {
+                    $scope.dateList.push(item.PurchaseMonth);
+                    $scope.dataDateList.push(1);
+                }
+                else {
+                    $scope.dataDateList[$scope.dateList.indexOf(item.PurchaseMonth)] ++;
+                }
+            });
+
+            $scope.isStatic = true;
+            console.log($scope.dataDateList);
+            console.log($scope.dateList);
+            $scope.labels = ["Normal", "Legacy", "Epic", "Legendaray", "Hextech", "Ultimate", "Limited"];
+            $scope.dataChart = [$scope.defaultItem, $scope.legacyItem, $scope.epicItem, $scope.legendItem, $scope.mythicItem, $scope.ultimateItem, $scope.limitedItem];
+            $scope.type = 'pie';
+            $scope.typePurchase = 'bar';
+
+            $scope.toggle = function () {
+                $scope.type = $scope.type === 'bar' ?
+                    'pie' : 'bar';
+            };
+            $scope.triggerType = function () {
+                $scope.typePurchase = $scope.typePurchase === 'bar' ?
+                    'line' : 'bar';
+            };
+
+        };
+
+        $scope.filteLegacy = false;
+
+        $scope.query = {
+            name: ''
+        };
+
+        $scope.legacyItem = 0;
+        $scope.epicItem = 0;
+        $scope.legendItem = 0;
+        $scope.ultimateItem = 0;
+        $scope.mythicItem = 0;
+        $scope.defaultItem = 0;
+        $scope.limitedItem = 0;
+
+        $scope.dateList = [];
+        $scope.dataDateList = [];
+
+        $http.get('/merge.json').then(function (res) {
+            $scope.data = res.data;
+            $scope.data.forEach(function (item) {
+                if (item.tags.indexOf('legacy') !== -1) {
+                    $scope.legacyItem++;
+                }
+                if (item.rarity === 'EPIC') {
+                    $scope.epicItem++;
+                }
+                if (item.rarity === 'MYTHIC') {
+                    $scope.mythicItem++;
+                }
+                if (item.rarity === 'LEGENDARY') {
+                    $scope.legendItem++;
+                }
+                if (item.rarity === 'ULTIMATE') {
+                    $scope.ultimateItem++;
+                }
+                if (item.rarity === 'DEFAULT') {
+                    $scope.defaultItem++;
+                }
+                if (item.rpValue === 9999) {
+                    $scope.limitedItem++;
+                }
+                item.PurchaseDate = new Date(item.PurchaseDate);
+            })
+        });
+        $http.get('/da.json').then(function (res) {
+            $scope.skinAll = res.data.skinMetadata;
+        });
+    });
+    app.filter('filterSkins', function () {
+        return function (items, filter) {
+            switch (filter) {
+                case  'legacy': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.tags.indexOf('legacy') !== -1) {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'epic': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rarity === 'EPIC') {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'limited': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rpValue === 9999) {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'mithic': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rarity === 'MYTHIC') {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'legendary': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rarity === 'LEGENDARY') {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'ultimate': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rarity === 'ULTIMATE') {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                    break;
+                }
+                default: {
+                    return items;
+                }
+            }
+        };
+    });
+    app.filter('filterDate', function () {
+        return function (items, filter) {
+            switch (filter) {
+                case  'legacy': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.tags.indexOf('legacy') !== -1) {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'epic': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rarity === 'EPIC') {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'limited': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rpValue === 9999) {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'mithic': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rarity === 'MYTHIC') {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'legendary': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rarity === 'LEGENDARY') {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                }
+                case  'ultimate': {
+                    let newItem = [];
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.rarity === 'ULTIMATE') {
+                            newItem.push(item);
+                        }
+                    }
+                    return newItem;
+                    break;
+                }
+                default: {
+                    return items;
+                }
+            }
+        };
+    })
+
+</script>
+</body>
+</html>
